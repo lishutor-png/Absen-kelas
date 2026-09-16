@@ -1,0 +1,46 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <!-- Background rounded cover of attendance book -->
+    <path
+        android:fillColor="#00695C"
+        android:pathData="M8,6 C8,4.9 8.9,4 10,4 L38,4 C39.1,4 40,4.9 40,6 L40,42 C40,43.1 39.1,44 38,44 L10,44 C8.9,44 8,43.1 8,42 Z" />
+    <!-- Book spine fold -->
+    <path
+        android:fillColor="#004D40"
+        android:pathData="M8,6 C8,4.9 8.9,4 10,4 L14,4 L14,44 L10,44 C8.9,44 8,43.1 8,42 Z" />
+    <!-- White paper page inlay -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M16,8 L36,8 C37.1,8 38,8.9 38,10 L38,38 C38,39.1 37.1,40 36,40 L16,40 Z" />
+    <!-- Checkmark 1 (Green) -->
+    <path
+        android:fillColor="#1B5E20"
+        android:pathData="M19,16 L22,19 L28,13 L26.6,11.6 L22,16.2 L20.4,14.6 Z" />
+    <!-- Row line 1 -->
+    <path
+        android:fillColor="#B0BEC5"
+        android:pathData="M29,15 L35,15 L35,17 L29,17 Z" />
+    <!-- Checkmark 2 (Green) -->
+    <path
+        android:fillColor="#1B5E20"
+        android:pathData="M19,24 L22,27 L28,21 L26.6,19.6 L22,24.2 L20.4,22.6 Z" />
+    <!-- Row line 2 -->
+    <path
+        android:fillColor="#B0BEC5"
+        android:pathData="M29,23 L35,23 L35,25 L29,25 Z" />
+    <!-- Checkmark 3 (Green) -->
+    <path
+        android:fillColor="#1B5E20"
+        android:pathData="M19,32 L22,35 L28,29 L26.6,27.6 L22,32.2 L20.4,30.6 Z" />
+    <!-- Row line 3 -->
+    <path
+        android:fillColor="#B0BEC5"
+        android:pathData="M29,31 L35,31 L35,33 L29,33 Z" />
+    <!-- Bookmark ribbon (Gold/Yellow accent) -->
+    <path
+        android:fillColor="#FFB300"
+        android:pathData="M27,4 L31,4 L31,12 L29,10 L27,12 Z" />
+</vector>

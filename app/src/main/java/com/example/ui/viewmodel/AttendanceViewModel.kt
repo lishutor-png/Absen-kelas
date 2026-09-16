@@ -86,6 +86,13 @@ class AttendanceViewModel(application: Application) : AndroidViewModel(applicati
         AttendanceSummary(0, 0, 0, 0, 0)
     )
 
+    // Reporter State (Role & Name as requested by user)
+    private val _reporterRole = MutableStateFlow(userPrefs.reporterRole)
+    val reporterRole: StateFlow<UserRole> = _reporterRole.asStateFlow()
+
+    private val _reporterName = MutableStateFlow(userPrefs.reporterName)
+    val reporterName: StateFlow<String> = _reporterName.asStateFlow()
+
     // Settings State
     private val _className = MutableStateFlow(userPrefs.className)
     val className: StateFlow<String> = _className.asStateFlow()
@@ -117,6 +124,15 @@ class AttendanceViewModel(application: Application) : AndroidViewModel(applicati
 
     fun showFeedback(message: String) {
         _feedbackMessage.value = message
+    }
+
+    fun updateReporterProfile(role: UserRole, name: String) {
+        userPrefs.reporterRole = role
+        userPrefs.reporterName = name
+        _reporterRole.value = role
+        _reporterName.value = name
+        _currentSession.value = userPrefs.getCurrentSession()
+        _feedbackMessage.value = "Identitas pelapor diatur: ${role.displayName} ${if (name.isNotBlank()) "($name)" else ""}"
     }
 
     // --- Authentication ---
@@ -237,8 +253,9 @@ class AttendanceViewModel(application: Application) : AndroidViewModel(applicati
     fun sendWhatsAppReport(context: Context, absentOnly: Boolean) {
         val currentRecords = recordsForSelectedDate.value
         val summary = attendanceSummary.value
-        val reporterRole = _currentSession.value?.role?.displayName ?: "Pengurus Kelas"
-        val reporterName = _currentSession.value?.displayName ?: "Ketua Kelas"
+        val role = _reporterRole.value
+        val reporterRole = role.displayName
+        val reporterName = _reporterName.value.ifBlank { role.displayName }
         val timeNow = DateTimeUtils.getCurrentTime()
 
         val textReport = if (absentOnly) {
@@ -275,8 +292,9 @@ class AttendanceViewModel(application: Application) : AndroidViewModel(applicati
     fun getPreviewReport(absentOnly: Boolean): String {
         val currentRecords = recordsForSelectedDate.value
         val summary = attendanceSummary.value
-        val reporterRole = _currentSession.value?.role?.displayName ?: "Pengurus Kelas"
-        val reporterName = _currentSession.value?.displayName ?: "Ketua Kelas"
+        val role = _reporterRole.value
+        val reporterRole = role.displayName
+        val reporterName = _reporterName.value.ifBlank { role.displayName }
         val timeNow = DateTimeUtils.getCurrentTime()
 
         return if (absentOnly) {

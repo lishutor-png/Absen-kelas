@@ -173,11 +173,18 @@ fun AttendanceScreen(
                             overflow = TextOverflow.Ellipsis
                         )
                         Row(verticalAlignment = Alignment.CenterVertically) {
+                            val roleLabel = currentSession?.role?.displayName ?: "Ketua Kelas"
+                            val nameLabel = currentSession?.displayName
+                            val subtitleText = if (nameLabel.isNullOrBlank() || nameLabel == roleLabel) {
+                                "Pelapor: $roleLabel"
+                            } else {
+                                "Pelapor: $roleLabel ($nameLabel)"
+                            }
                             Text(
-                                text = "${currentSession?.displayName ?: "Pengurus"} (${currentSession?.role?.displayName ?: "Siswa"})",
+                                text = subtitleText,
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.primary,
-                                fontWeight = FontWeight.Medium
+                                fontWeight = FontWeight.SemiBold
                             )
                         }
                     }

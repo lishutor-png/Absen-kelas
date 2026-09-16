@@ -135,4 +135,18 @@ class ExampleUnitTest {
     assertEquals("Bu Guru", backupData.waliKelasName)
     assertEquals("08123456789", backupData.waliKelasPhone)
   }
+
+  @Test
+  fun testReporterProfileDirectAccess() {
+    val context = androidx.test.core.app.ApplicationProvider.getApplicationContext<android.content.Context>()
+    val prefs = com.example.data.preferences.UserPreferences(context)
+
+    // Test updating to Wakil Ketua Kelas
+    prefs.reporterRole = com.example.domain.model.UserRole.WAKIL_KETUA_KELAS
+    prefs.reporterName = "Siti Fatimah"
+
+    val session = prefs.getCurrentSession()
+    assertEquals(com.example.domain.model.UserRole.WAKIL_KETUA_KELAS, session.role)
+    assertEquals("Siti Fatimah", session.displayName)
+  }
 }

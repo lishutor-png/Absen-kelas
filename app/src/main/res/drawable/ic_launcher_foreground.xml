@@ -3,6 +3,6 @@
     <item
         android:width="66dp"
         android:height="66dp"
-        android:drawable="@drawable/ic_lapor_absen_logo"
+        android:drawable="@drawable/ic_flat_absen_book"
         android:gravity="center" />
 </layer-list>

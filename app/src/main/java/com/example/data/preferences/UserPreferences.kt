@@ -23,9 +23,23 @@ class UserPreferences(context: Context) {
         private const val KEY_LOGGED_IN_ROLE = "logged_in_role"
         private const val KEY_LOGGED_IN_NAME = "logged_in_name"
         private const val KEY_IS_LOGGED_IN = "is_logged_in"
+
+        private const val KEY_REPORTER_ROLE = "reporter_role"
+        private const val KEY_REPORTER_NAME = "reporter_name"
     }
 
     // Default initial values
+    var reporterRole: UserRole
+        get() {
+            val roleStr = prefs.getString(KEY_REPORTER_ROLE, UserRole.KETUA_KELAS.name) ?: UserRole.KETUA_KELAS.name
+            return UserRole.fromString(roleStr)
+        }
+        set(value) = prefs.edit().putString(KEY_REPORTER_ROLE, value.name).apply()
+
+    var reporterName: String
+        get() = prefs.getString(KEY_REPORTER_NAME, "") ?: ""
+        set(value) = prefs.edit().putString(KEY_REPORTER_NAME, value.trim()).apply()
+
     var adminPassword: String
         get() = prefs.getString(KEY_ADMIN_PASSWORD, "admin") ?: "admin"
         set(value) = prefs.edit().putString(KEY_ADMIN_PASSWORD, value.trim()).apply()
@@ -84,17 +98,13 @@ class UserPreferences(context: Context) {
         prefs.edit().remove(KEY_IS_LOGGED_IN).apply()
     }
 
-    fun getCurrentSession(): UserSession? {
-        return if (isLoggedIn) {
-            UserSession(
-                role = currentRole,
-                username = when (currentRole) {
-                    UserRole.ADMIN -> "admin"
-                    UserRole.KETUA_KELAS -> "ketua"
-                    UserRole.WAKIL_KETUA_KELAS -> "wakil"
-                },
-                displayName = currentUserName
-            )
-        } else null
+    fun getCurrentSession(): UserSession {
+        val role = reporterRole
+        val name = if (reporterName.isNotBlank()) reporterName else role.displayName
+        return UserSession(
+            role = role,
+            username = if (role == UserRole.KETUA_KELAS) "ketua" else "wakil",
+            displayName = name
+        )
     }
 }

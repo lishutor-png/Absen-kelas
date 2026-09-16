@@ -60,6 +60,8 @@ fun LaporAbsenApp(
     val snackbarHostState = remember { SnackbarHostState() }
 
     val currentSession by viewModel.currentSession.collectAsStateWithLifecycle()
+    val reporterRole by viewModel.reporterRole.collectAsStateWithLifecycle()
+    val reporterName by viewModel.reporterName.collectAsStateWithLifecycle()
     val selectedDate by viewModel.selectedDate.collectAsStateWithLifecycle()
     val students by viewModel.students.collectAsStateWithLifecycle()
     val records by viewModel.recordsForSelectedDate.collectAsStateWithLifecycle()
@@ -68,14 +70,12 @@ fun LaporAbsenApp(
     val className by viewModel.className.collectAsStateWithLifecycle()
     val waliKelasName by viewModel.waliKelasName.collectAsStateWithLifecycle()
     val waliKelasPhone by viewModel.waliKelasPhone.collectAsStateWithLifecycle()
-    val ketuaName by viewModel.ketuaName.collectAsStateWithLifecycle()
-    val wakilName by viewModel.wakilName.collectAsStateWithLifecycle()
 
     val feedbackMessage by viewModel.feedbackMessage.collectAsStateWithLifecycle()
 
-    // Screen navigation state
-    var currentScreen by remember(currentSession) {
-        mutableStateOf(if (currentSession == null) Screen.LOGIN else Screen.ATTENDANCE)
+    // Screen navigation state: Directly enter Attendance screen at start
+    var currentScreen by remember {
+        mutableStateOf(Screen.ATTENDANCE)
     }
 
     // Dialog states for Backup & Restore
@@ -193,23 +193,16 @@ fun LaporAbsenApp(
 
             Screen.SETTINGS -> {
                 SettingsScreen(
-                    currentSession = currentSession,
+                    reporterRole = reporterRole,
+                    reporterName = reporterName,
                     className = className,
                     waliKelasName = waliKelasName,
                     waliKelasPhone = waliKelasPhone,
-                    ketuaName = ketuaName,
-                    wakilName = wakilName,
+                    onUpdateReporterProfile = { role, name ->
+                        viewModel.updateReporterProfile(role, name)
+                    },
                     onUpdateClassInfo = { cName, wName, wPhone ->
                         viewModel.updateClassInfo(cName, wName, wPhone)
-                    },
-                    onUpdateAdminPassword = { newPass ->
-                        viewModel.updateAdminPassword(newPass)
-                    },
-                    onUpdateKetuaCredentials = { name, pin ->
-                        viewModel.updateKetuaCredentials(name, pin)
-                    },
-                    onUpdateWakilCredentials = { name, pin ->
-                        viewModel.updateWakilCredentials(name, pin)
                     },
                     onTriggerBackup = {
                         coroutineScope.launch {
@@ -219,10 +212,6 @@ fun LaporAbsenApp(
                     },
                     onTriggerRestore = {
                         showRestoreDialog = true
-                    },
-                    onLogout = {
-                        viewModel.logout()
-                        currentScreen = Screen.LOGIN
                     },
                     onNavigateBack = {
                         currentScreen = Screen.ATTENDANCE
