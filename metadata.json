@@ -1,0 +1,6 @@
+{
+  "name": "Lapor Absen",
+  "description": "Aplikasi absensi kelas untuk ketua dan wakil ketua kelas dengan rekapitulasi otomatis dan pelaporan WhatsApp ke wali kelas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
